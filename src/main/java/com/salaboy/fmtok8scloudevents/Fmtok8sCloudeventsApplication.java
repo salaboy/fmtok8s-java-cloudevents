@@ -35,7 +35,7 @@ public class Fmtok8sCloudeventsApplication {
 	@Value("${SINK:http://localhost:8080}")
 	private String SINK;
 
-	@PostMapping(value = "/send")
+	@PostMapping(value = "/produce")
 	public ResponseEntity<Void> produceCloudEvent(){
 		// This is my custom payload for the CloudEvent, usually this will be your application data
 		MyCloudEventData data = new MyCloudEventData();
@@ -68,6 +68,7 @@ public class Fmtok8sCloudeventsApplication {
 
 	@PostMapping(value = "/")
 	public ResponseEntity<Void> consumeCloudEvent(@RequestHeader HttpHeaders headers, @RequestBody MyCloudEventData myCloudEventData) throws JsonProcessingException {
+
 		CloudEvent cloudEvent = CloudEventHttpUtils.fromHttp(headers).build();
 		logCloudEvent(cloudEvent);
 		if (!cloudEvent.getType().equals("MyCloudEvent")) {
