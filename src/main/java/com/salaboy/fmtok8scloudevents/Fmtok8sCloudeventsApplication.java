@@ -18,6 +18,8 @@ import org.springframework.boot.web.codec.CodecCustomizer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.CodecConfigurer;
+import org.springframework.nativex.hint.SerializationHint;
+import org.springframework.nativex.hint.TypeHint;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +35,7 @@ import java.util.UUID;
 @SpringBootApplication
 @RestController
 @Slf4j
+@SerializationHint(types = MyCloudEventData.class, typeNames = "com.salaboy.fmtok8scloudevents.MyCloudEventData")
 public class Fmtok8sCloudeventsApplication {
 
 	private ObjectMapper objectMapper = new ObjectMapper();
@@ -40,6 +43,7 @@ public class Fmtok8sCloudeventsApplication {
 	@Autowired
 	private WebClient.Builder rest;
 
+	@SerializationHint(types = MyCloudEventData.class, typeNames = "com.salaboy.fmtok8scloudevents.MyCloudEventData")
 	@Configuration
 	public static class CloudEventHandlerConfiguration implements CodecCustomizer {
 
@@ -61,6 +65,7 @@ public class Fmtok8sCloudeventsApplication {
 	@PostMapping(value = "/produce")
 	public ResponseEntity<String> produceCloudEvent() throws JsonProcessingException {
 		// This is my custom payload for the CloudEvent, usually this will be your application data
+		log.info("Producing CloudEvent for SINK: " + SINK);
 		MyCloudEventData data = new MyCloudEventData();
 		data.setMyData("Hello from Java");
 		data.setMyCounter(1);

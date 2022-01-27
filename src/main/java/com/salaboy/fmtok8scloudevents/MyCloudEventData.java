@@ -1,6 +1,9 @@
 package com.salaboy.fmtok8scloudevents;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
+
 // This class represents the data that I want to send to other applications
+@JsonClassDescription("MyCloudEventData")
 public class MyCloudEventData {
     private String myData;
     private Integer myCounter;
