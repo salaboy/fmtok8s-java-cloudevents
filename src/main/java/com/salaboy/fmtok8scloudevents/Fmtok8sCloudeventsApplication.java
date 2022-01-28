@@ -72,7 +72,7 @@ public class Fmtok8sCloudeventsApplication {
 
 		CloudEventBuilder cloudEventBuilder = CloudEventBuilder.v1()
 				.withId(UUID.randomUUID().toString())
-				.withType("MyCloudEvent")
+				.withType("app-a.MyCloudEvent")
 				.withSource(URI.create("application-a"))
 				.withDataContentType("application/json; charset=UTF-8")
 				.withData(objectMapper.writeValueAsString(data).getBytes(StandardCharsets.UTF_8));
@@ -98,8 +98,8 @@ public class Fmtok8sCloudeventsApplication {
 	public ResponseEntity<Void> consumeCloudEvent(@RequestBody CloudEvent cloudEvent) throws IOException {
 
 		logCloudEvent(cloudEvent);
-		if (!cloudEvent.getType().equals("MyCloudEvent")) {
-			throw new IllegalStateException("Wrong Cloud Event Type, expected: 'MyCloudEvent' and got: " + cloudEvent.getType());
+		if (!cloudEvent.getType().equals("app-b.MyCloudEvent")) {
+			throw new IllegalStateException("Wrong Cloud Event Type, expected: 'app-b.MyCloudEvent' and got: " + cloudEvent.getType());
 		}
 
 		MyCloudEventData data = objectMapper.readValue(cloudEvent.getData().toBytes(), MyCloudEventData.class);
